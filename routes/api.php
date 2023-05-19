@@ -1,19 +1,26 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LinksController;
+use App\Http\Controllers\Api\FeedbackController;
+use App\Http\Controllers\Api\StyleController;
+use App\Http\Controllers\Api\HistoryController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::group([
+    // 'middleware' => 'CORS'
+], function ($router) {
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    //Auth Routes
+    Route::get('/email/verification', [AuthController::class, 'sendverification']);
+
+    Route::post('/register', [AuthController::class, 'register'])->name('register.user');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.user');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout.user');
+    Route::get('/follow-count', [AuthController::class, 'followCount'])->name('followCount');
+    Route::get('/follow-data', [AuthController::class, 'followData']);
+
+    Route::post('/reset', [AuthController::class, 'reset']);
+    Route::post('/forgot', [AuthController::class, 'forgot']);
+    Route::post('/verifyuser', [AuthController::class, 'verifyuser']);
+    Route::post('/get-verified', [AuthController::class, 'verifyStatus']);
 });
